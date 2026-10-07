@@ -8,7 +8,8 @@ TripGen AI creates personalized, day-by-day travel plans from a traveler’s pre
 
 <br />
 
-![TripGen AI Hero](./docs/screenshots/tripgen-hero.png)
+![TripGen AI Hero](<img width="1067" height="464" alt="{A6927294-65F6-466A-AE5C-37C2DE4D546B}" src="https://github.com/user-attachments/assets/6da4664b-e2a9-45c8-ade2-4f6c8f6d60a5" />
+)
 
 <br />
 
