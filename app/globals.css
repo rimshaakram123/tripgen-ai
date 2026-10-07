@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@theme {
+  --color-midnight: #070b16;
+  --color-slate-dark: #0d1324;
+  --color-card: #11192d;
+  --color-violet: #8b5cf6;
+  --color-violet-hover: #a78bfa;
+  --color-cyan: #22d3ee;
+  --color-white-soft: #f8fafc;
+  --color-gray-soft: #9aa7bd;
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-danger: #fb7185;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+:root {
+  --background: #070b16;
+  --foreground: #f8fafc;
+  --muted: #9aa7bd;
+  --panel: rgba(15, 23, 42, 0.72);
+  --panel-strong: rgba(17, 25, 45, 0.9);
+  --line: rgba(255, 255, 255, 0.09);
+  --violet: #8b5cf6;
+  --cyan: #22d3ee;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 10% -10%, rgba(139, 92, 246, 0.20), transparent 34%),
+    radial-gradient(circle at 90% 0%, rgba(34, 211, 238, 0.12), transparent 30%),
+    linear-gradient(180deg, #070b16 0%, #080d19 52%, #070b16 100%);
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
+::selection { background: rgba(34, 211, 238, 0.28); color: #fff; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #070b16; }
+::-webkit-scrollbar-thumb { background: linear-gradient(#334155, #475569); border-radius: 999px; border: 2px solid #070b16; }
+::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+*:focus-visible { outline: 2px solid rgba(34, 211, 238, 0.9); outline-offset: 3px; }
+
+a { text-underline-offset: 3px; }
+
+.app-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black, transparent 88%);
+}
+
+.glass-panel {
+  border: 1px solid rgba(255,255,255,0.085);
+  background: linear-gradient(180deg, rgba(19, 28, 50, 0.88), rgba(10, 16, 31, 0.78));
+  box-shadow: 0 20px 70px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.035);
+  backdrop-filter: blur(18px);
+}
+
+.soft-ring { box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 14px 60px rgba(0,0,0,0.26); }
+
+.text-gradient {
+  background: linear-gradient(100deg, #ffffff 4%, #c4b5fd 44%, #67e8f9 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-border { position: relative; }
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(167,139,250,.7), rgba(34,211,238,.25), rgba(255,255,255,.08));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@keyframes floaty {
+  0%,100% { transform: translate3d(0,0,0) scale(1); }
+  50% { transform: translate3d(0,-16px,0) scale(1.03); }
+}
+@keyframes pulse-glow {
+  0%,100% { opacity: .45; transform: scale(1); }
+  50% { opacity: .75; transform: scale(1.08); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-floaty { animation: floaty 8s ease-in-out infinite; }
+.animate-glow { animation: pulse-glow 5.5s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up .65s ease both; }
+.shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,.12), rgba(255,255,255,.04));
+  background-size: 200% 100%;
+  animation: shimmer 2.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}

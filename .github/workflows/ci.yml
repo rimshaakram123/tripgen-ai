@@ -1,0 +1,67 @@
+name: TripGen AI CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: tripgen_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tripgen_test
+      NEXTAUTH_SECRET: github-actions-test-secret
+      NEXTAUTH_URL: http://localhost:3000
+
+      OPENROUTER_ENABLED: "false"
+      OPENROUTER_API_KEY: ""
+      OPENROUTER_BASE_URL: https://openrouter.ai/api/v1
+      OPENROUTER_MODEL: openrouter/free
+
+      OPENWEATHER_API_KEY: ""
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Push database schema
+        run: npm run db:push
+
+      - name: Run checks
+        run: npm run check
+
+      - name: Build application
+        run: npm run build

@@ -1,0 +1,21 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { ArrowRight, Compass, Lock, Mail, Sparkles } from "lucide-react";
+import toast from "react-hot-toast";
+import { z } from "zod";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import AmbientBackground from "@/components/ui/AmbientBackground";
+
+const schema=z.object({email:z.string().email("Please enter a valid email"),password:z.string().min(6,"Password must be at least 6 characters")});
+
+export default function LoginPage(){
+  const router=useRouter(); const searchParams=useSearchParams(); const callbackUrl=searchParams.get("callbackUrl")||"/dashboard";
+  const [email,setEmail]=useState(""); const [password,setPassword]=useState(""); const [errors,setErrors]=useState<{email?:string;password?:string}>({}); const [loading,setLoading]=useState(false);
+  async function submit(e:React.FormEvent){e.preventDefault(); const parsed=schema.safeParse({email,password}); if(!parsed.success){const next:{email?:string;password?:string}={}; for(const issue of parsed.error.issues){if(issue.path[0]==="email")next.email=issue.message;if(issue.path[0]==="password")next.password=issue.message;}setErrors(next);return;} setErrors({});setLoading(true);try{const res=await signIn("credentials",{email,password,redirect:false});if(res?.error){toast.error("Invalid email or password");setLoading(false);return;}toast.success("Welcome back");router.push(callbackUrl);router.refresh();}catch{toast.error("Something went wrong. Please try again.");setLoading(false)}}
+  return <main className="relative min-h-screen overflow-hidden"><AmbientBackground/><div className="mx-auto grid min-h-screen max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-2 lg:px-8"><div className="hidden lg:block"><Link href="/" className="inline-flex items-center gap-3"><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet to-cyan"><Compass className="text-white"/></div><span className="text-xl font-bold text-white">TripGen AI</span></Link><h1 className="mt-10 max-w-xl text-5xl font-black tracking-[-.05em] text-white">Pick up where your next journey left off.</h1><p className="mt-5 max-w-lg text-lg leading-8 text-gray-soft">Your Travel DNA, trips and grounded itineraries stay together in one adaptive workspace.</p><div className="mt-10 flex gap-3 text-xs text-gray-soft"><span className="rounded-full border border-white/10 bg-white/[.04] px-3 py-2">Verified places</span><span className="rounded-full border border-white/10 bg-white/[.04] px-3 py-2">AI copilot</span><span className="rounded-full border border-white/10 bg-white/[.04] px-3 py-2">Smart budget</span></div></div><div className="mx-auto w-full max-w-md"><div className="glass-panel rounded-[32px] p-7 sm:p-8"><div className="mb-7"><div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet/30 to-cyan/20 text-cyan"><Sparkles size={20}/></div><h2 className="mt-5 text-3xl font-black tracking-[-.035em] text-white">Welcome back</h2><p className="mt-2 text-sm text-gray-soft">Sign in to continue planning.</p></div><form onSubmit={submit} className="space-y-4"><div className="relative"><Mail size={17} className="absolute left-4 top-1/2 z-10 -translate-y-1/2 text-gray-soft"/><Input type="email" placeholder="you@example.com" value={email} onChange={e=>setEmail(e.target.value)} error={errors.email} className="pl-11"/></div><div className="relative"><Lock size={17} className="absolute left-4 top-1/2 z-10 -translate-y-1/2 text-gray-soft"/><Input type="password" placeholder="Your password" value={password} onChange={e=>setPassword(e.target.value)} error={errors.password} className="pl-11"/></div><Button type="submit" fullWidth size="lg" loading={loading}><span className="flex items-center gap-2">Sign in <ArrowRight size={17}/></span></Button></form><p className="mt-6 text-center text-sm text-gray-soft">New to TripGen? <Link href="/register" className="font-semibold text-cyan hover:text-white">Create an account</Link></p></div></div></div></main>
+}

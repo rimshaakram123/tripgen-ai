@@ -1,0 +1,2 @@
+import Navbar from "@/components/layout/Navbar"; import DNAQuiz from "@/components/travel-dna/DNAQuiz"; import AmbientBackground from "@/components/ui/AmbientBackground";
+export default function QuizPage(){return <main className="relative min-h-screen"><AmbientBackground/><Navbar/><div className="mx-auto flex min-h-screen max-w-7xl items-center justify-center px-6 pb-16 pt-28"><DNAQuiz/></div></main>}
