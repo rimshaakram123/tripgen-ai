@@ -141,18 +141,6 @@ If AI generation fails, the fallback itinerary is still built from the verified 
 
 ---
 
-## Screenshots
-
-### Grounded itinerary
-
-![Grounded itinerary](./docs/screenshots/itinerary-grounding.png)
-
-### AI Copilot
-
-![TripGen Copilot](./docs/screenshots/ai-copilot.png)
-
----
-
 ## Tech stack
 
 | Layer | Technology |
